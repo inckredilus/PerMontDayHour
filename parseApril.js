@@ -43,18 +43,12 @@ const findFilteredValues = (data, maxValue = 6) => {
   // Sort the filtered values by value in descending order
   filteredValues.sort((a, b) => b.value - a.value);
 
-  console.log('Values less than or equal to', maxValue, 'kWh:', filteredValues);
   return filteredValues.slice(0, 10); // Return only the top 10 values
 };
 
 // Display the data in the browser
 window.onload = async () => {
   const monthData = await fetchCsvData('./april.csv'); // Assumes the CSV file is named 'data.csv' in the same directory
-
-  const displayElement = document.getElementById('dataDisplay');
-  if (displayElement) {
-    displayElement.textContent = `Month Data:\n${JSON.stringify(monthData, null, 2)}`;
-  }
 
   // Find and display filtered values
   const filteredValues = findFilteredValues(monthData);
