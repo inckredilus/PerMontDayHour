@@ -745,14 +745,35 @@ const parseCsvToObject = (csv) => {
 
 const monthData = parseCsvToObject(csvData);
 
+// Find and log values greater than a given max value between 6:00 and 22:00
+const findExceedingValues = (data, maxValue = 6) => {
+  const exceedingValues = [];
+
+  for (const day in data) {
+    for (let hour = 6; hour <= 22; hour++) {
+      if (data[day][hour] !== null && data[day][hour] > maxValue) {
+        exceedingValues.push({ day, hour, value: data[day][hour] });
+      }
+    }
+  }
+
+  console.log('Values exceeding', maxValue, 'kWh:', exceedingValues);
+  return exceedingValues;
+};
+
 // Display the data in the browser
 window.onload = () => {
-    const displayElement = document.getElementById('dataDisplay');
-    if (displayElement) {
-      displayElement.textContent = JSON.stringify(monthData, null, 2);
-    }
-  };
+  const displayElement = document.getElementById('dataDisplay');
+  if (displayElement) {
+    displayElement.textContent = `Month Data:\n${JSON.stringify(monthData, null, 2)}`;
+  }
 
-  console.log(monthData);
+  // Find and display exceeding values
+  const exceedingValues = findExceedingValues(monthData);
+  const exceedingElement = document.createElement('pre');
+  exceedingElement.textContent = `Exceeding Values:\n${JSON.stringify(exceedingValues, null, 2)}`;
+  document.body.appendChild(exceedingElement);
+};
 
+console.log(monthData);
   
