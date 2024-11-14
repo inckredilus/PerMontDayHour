@@ -745,17 +745,20 @@ const parseCsvToObject = (csv) => {
 
 const monthData = parseCsvToObject(csvData);
 
-// Find and log values less than or equal to a given max value between 6:00 and 22:00
+// Find and log values less than or equal to a given max value between 6:00 and 22:00 (excluding 22:00)
 const findFilteredValues = (data, maxValue = 6) => {
   const filteredValues = [];
 
   for (const day in data) {
-    for (let hour = 6; hour <= 22; hour++) {
+    for (let hour = 6; hour < 22; hour++) { // Updated to exclude 22:00
       if (data[day][hour] !== null && data[day][hour] <= maxValue) {
         filteredValues.push({ day, hour, value: data[day][hour] });
       }
     }
   }
+
+  // Sort the filtered values by value in descending order
+  filteredValues.sort((a, b) => b.value - a.value);
 
   console.log('Values less than or equal to', maxValue, 'kWh:', filteredValues);
   return filteredValues;
