@@ -745,20 +745,20 @@ const parseCsvToObject = (csv) => {
 
 const monthData = parseCsvToObject(csvData);
 
-// Find and log values greater than a given max value between 6:00 and 22:00
-const findExceedingValues = (data, maxValue = 6) => {
-  const exceedingValues = [];
+// Find and log values less than or equal to a given max value between 6:00 and 22:00
+const findFilteredValues = (data, maxValue = 6) => {
+  const filteredValues = [];
 
   for (const day in data) {
     for (let hour = 6; hour <= 22; hour++) {
-      if (data[day][hour] !== null && data[day][hour] > maxValue) {
-        exceedingValues.push({ day, hour, value: data[day][hour] });
+      if (data[day][hour] !== null && data[day][hour] <= maxValue) {
+        filteredValues.push({ day, hour, value: data[day][hour] });
       }
     }
   }
 
-  console.log('Values exceeding', maxValue, 'kWh:', exceedingValues);
-  return exceedingValues;
+  console.log('Values less than or equal to', maxValue, 'kWh:', filteredValues);
+  return filteredValues;
 };
 
 // Display the data in the browser
@@ -768,12 +768,11 @@ window.onload = () => {
     displayElement.textContent = `Month Data:\n${JSON.stringify(monthData, null, 2)}`;
   }
 
-  // Find and display exceeding values
-  const exceedingValues = findExceedingValues(monthData);
-  const exceedingElement = document.createElement('pre');
-  exceedingElement.textContent = `Exceeding Values:\n${JSON.stringify(exceedingValues, null, 2)}`;
-  document.body.appendChild(exceedingElement);
+  // Find and display filtered values
+  const filteredValues = findFilteredValues(monthData);
+  const filteredElement = document.createElement('pre');
+  filteredElement.textContent = `Filtered Values (<= 6 kWh):\n${JSON.stringify(filteredValues, null, 2)}`;
+  document.body.appendChild(filteredElement);
 };
 
 console.log(monthData);
-  
