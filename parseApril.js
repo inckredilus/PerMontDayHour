@@ -773,8 +773,17 @@ window.onload = () => {
 
   // Find and display filtered values
   const filteredValues = findFilteredValues(monthData);
-  const filteredElement = document.createElement('pre');
-  filteredElement.textContent = `Filtered Values (<= 6 kWh):\n${JSON.stringify(filteredValues, null, 2)}`;
+  const filteredElement = document.createElement('div');
+  filteredElement.innerHTML = `<h2>Filtered values <= 6 kWh for 2024 April</h2>`;
+
+  const listElement = document.createElement('ol');
+  filteredValues.forEach(item => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${item.value} kWh - Day ${item.day} : ${item.hour}:00`;
+    listElement.appendChild(listItem);
+  });
+
+  filteredElement.appendChild(listElement);
   document.body.appendChild(filteredElement);
 };
 
